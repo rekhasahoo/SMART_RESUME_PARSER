@@ -1,78 +1,89 @@
-AI-Powered Resume Screener
-Overview
-This project provides a full-stack solution for automating the initial stages of the recruitment pipeline. It leverages a Large Language Model (LLM) to perform semantic analysis and matching between candidate resumes and a given job description. The system calculates a compatibility score and provides a qualitative justification, enabling recruiters to efficiently prioritize candidates.
+# 🧠 AI-Powered Resume Screener
 
-System Architecture
-The application is built on a decoupled client-server architecture:
+This project provides a **full-stack solution** for automating the initial stages of the recruitment pipeline.  
+It leverages a **Large Language Model (LLM)** to perform semantic analysis and matching between candidate resumes and a given job description.
 
-Frontend: A static single-page application built with vanilla HTML, CSS (Tailwind), and JavaScript that serves as the user interface.
+The system calculates a **compatibility score** and provides a **qualitative justification**, enabling recruiters to efficiently prioritize candidates.
 
-Backend: A Node.js server with an Express.js REST API that handles business logic and database communication.
+---
 
-Database: A MySQL database for persistent storage of screening results.
+## 🏗️ System Architecture
 
-External Service: The Google Gemini API is used for the core AI/LLM-based analysis.
+The application is built on a **decoupled client-server architecture**:
 
-Core Features
-File Ingestion: Supports multi-file uploads for candidate resumes in .pdf and .txt formats.
+### 🔹 Frontend
+A static single-page application built with:
+- **HTML**
+- **Tailwind CSS**
+- **JavaScript**
 
-Semantic Analysis: Utilizes an LLM to intelligently compare the unstructured text of a resume against a job description.
+### 🔹 Backend
+A **Node.js** server using **Express.js** REST API to handle:
+- Business logic  
+- Database communication
 
-Quantitative Scoring: Assigns a numerical score (1-10) to each candidate based on skill and experience alignment.
+### 🔹 Database
+- **MySQL** database for persistent storage of screening results.
 
-Qualitative Justification: Generates a concise rationale for each score, highlighting candidate strengths and weaknesses.
+### 🔹 External Service
+- **Google Gemini API** is used for core **AI/LLM-based analysis**.
 
-Data Persistence: Archives all screening results in a MySQL database for record-keeping and future analysis.
+---
 
-Technology Stack
-Tier
+## ⚙️ Core Features
 
-Technology
+- **📂 File Ingestion:** Supports multi-file uploads for candidate resumes (`.pdf` and `.txt` formats).
+- **🧩 Semantic Analysis:** Uses LLM to intelligently compare resume text with job descriptions.
+- **📊 Quantitative Scoring:** Assigns a score (1–10) based on skill and experience alignment.
+- **💬 Qualitative Justification:** Generates a concise rationale highlighting candidate strengths and weaknesses.
+- **🗄️ Data Persistence:** Archives all screening results in a MySQL database for record-keeping and future analysis.
 
-Frontend
+---
 
-HTML, Tailwind CSS, JavaScript
+## 🧰 Technology Stack
 
-Backend
+| Tier | Technology |
+|------|-------------|
+| **Frontend** | HTML, Tailwind CSS, JavaScript |
+| **Backend** | Node.js, Express.js |
+| **Database** | MySQL |
+| **AI Service** | Google Gemini API |
 
-Node.js, Express.js
+---
 
-Database
+## 🛠️ Setup and Installation
 
-MySQL
+### 🔑 Prerequisites
 
-AI Service
+Ensure you have the following installed:
+- [Node.js (v18.x or later)](https://nodejs.org/)
+- npm (Node Package Manager)
+- [MySQL Server & MySQL Workbench](https://dev.mysql.com/downloads/)
+- [Git](https://git-scm.com/)
 
-Google Gemini API
+---
 
-Setup and Installation
-Prerequisites
-Node.js (v18.x or later)
+### 📥 Installation Steps
 
-npm (Node Package Manager)
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd <repository-folder>
+2. **Install backend dependencies:**
 
-MySQL Server & MySQL Workbench
+```bash
+ npm install
+```
+3. **Database Setup:***
 
-Git
+-Connect to your MySQL instance.
 
-Installation Steps
-Clone the repository:
-
-git clone <repository-url>
-cd <repository-folder>
-
-Install backend dependencies:
-
-npm install
-
-Database Setup:
-
-Connect to your MySQL instance.
-
-Create a new schema (database) named resume_screener.
-
-Execute the following SQL script to create the required table:
-
+-Create a new schema (database) named:
+```bash
+CREATE DATABASE resume_screener;
+```
+-Execute the following SQL script to create the required table:
+```bash
 CREATE TABLE screening_results (
     id INT AUTO_INCREMENT PRIMARY KEY,
     candidate_name VARCHAR(255) NOT NULL,
@@ -81,20 +92,24 @@ CREATE TABLE screening_results (
     job_description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```
 
-Configuration:
+4. **Configuration:**
 
-In server.js, update the db connection object with your MySQL credentials (specifically the password).
+-In server.js, update the database connection object with your MySQL credentials (especially the password).
 
-In index.html, locate the apiKey constant and insert your Google Gemini API key if running outside the original development environment.
+-In index.html, locate the apiKey constant and insert your Google Gemini API key (if running outside the original development environment).
 
-Running the Application
-Start the backend server:
+## 🚀 Running the Application
 
+-Start the backend server:
+```bash
 node server.js
+```
 
-The server will be running on http://localhost:3000.
+The server will be running at:
+👉 http://localhost:3000
 
-Launch the frontend:
+-Launch the frontend:
 
 Open the index.html file directly in your web browser.
