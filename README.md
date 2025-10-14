@@ -25,7 +25,7 @@ A **Node.js** server using **Express.js** REST API to handle:
 ###  Database
 - **MySQL** database for persistent storage of screening results.
 
-### 🔹 External Service
+###  External Service
 - **Google Gemini API** is used for core **AI/LLM-based analysis**.
 
 ---
@@ -108,7 +108,7 @@ node server.js
 ```
 
 The server will be running at:
-👉 http://localhost:3000
+ http://localhost:3000
 
 - Launch the frontend:
 
