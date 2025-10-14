@@ -74,15 +74,15 @@ Ensure you have the following installed:
 ```bash
  npm install
 ```
-3. **Database Setup:***
+3. **Database Setup:**
 
--Connect to your MySQL instance.
+- Connect to your MySQL instance.
 
--Create a new schema (database) named:
+- Create a new schema (database) named:
 ```bash
 CREATE DATABASE resume_screener;
 ```
--Execute the following SQL script to create the required table:
+- Execute the following SQL script to create the required table:
 ```bash
 CREATE TABLE screening_results (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,13 +96,13 @@ CREATE TABLE screening_results (
 
 4. **Configuration:**
 
--In server.js, update the database connection object with your MySQL credentials (especially the password).
+- In server.js, update the database connection object with your MySQL credentials (especially the password).
 
--In index.html, locate the apiKey constant and insert your Google Gemini API key (if running outside the original development environment).
+- In index.html, locate the apiKey constant and insert your Google Gemini API key (if running outside the original development environment).
 
 ## 🚀 Running the Application
 
--Start the backend server:
+- Start the backend server:
 ```bash
 node server.js
 ```
@@ -110,6 +110,6 @@ node server.js
 The server will be running at:
 👉 http://localhost:3000
 
--Launch the frontend:
+- Launch the frontend:
 
 Open the index.html file directly in your web browser.
