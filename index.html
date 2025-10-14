@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Resume Screener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">AI-Powered Resume Screener</h1>
+            <p class="text-gray-600 mt-3 text-lg">Intelligently match candidates to your job descriptions.</p>
+        </header>
+
+        <main class="space-y-8">
+            <!-- Step 1: Job Description -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <div class="bg-indigo-100 text-indigo-600 rounded-full h-10 w-10 flex items-center justify-center font-bold text-xl ring-4 ring-indigo-50">1</div>
+                    <h2 class="text-2xl font-semibold text-gray-800 ml-4">Paste the Job Description</h2>
+                </div>
+                <textarea id="jobDescription" class="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" placeholder="Paste the full job description here..."></textarea>
+            </div>
+
+            <!-- Step 2: Resumes -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <div class="bg-indigo-100 text-indigo-600 rounded-full h-10 w-10 flex items-center justify-center font-bold text-xl ring-4 ring-indigo-50">2</div>
+                    <h2 class="text-2xl font-semibold text-gray-800 ml-4">Upload Candidate Resumes</h2>
+                </div>
+                <p class="text-gray-600 mb-4">Upload resumes in PDF or TXT format. You can select multiple files at once.</p>
+                <div class="mt-4">
+                    <label for="resumeUpload" class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors font-semibold">
+                        <i data-lucide="upload-cloud" class="w-5 h-5 mr-2"></i>
+                        Select Files
+                    </label>
+                    <input type="file" id="resumeUpload" class="hidden" multiple accept=".pdf,.txt">
+                </div>
+                <div id="fileList" class="mt-4 space-y-3">
+                    <!-- Selected files will be listed here -->
+                </div>
+            </div>
+
+            <!-- Step 3: Action Button -->
+            <div class="text-center my-8">
+                <button id="matchBtn" class="bg-indigo-600 text-white font-bold py-4 px-10 rounded-lg shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center mx-auto text-lg">
+                    <span id="button-text">Match Resumes</span>
+                    <div id="loading-spinner" class="loader !w-6 !h-6 hidden ml-3"></div>
+                </button>
+            </div>
+
+            <!-- Step 4: Results -->
+            <div id="resultsContainer" class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hidden">
+                 <div class="flex items-center mb-6">
+                    <div class="bg-indigo-100 text-indigo-600 rounded-full h-10 w-10 flex items-center justify-center">
+                         <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-gray-800 ml-4">Screening Results</h2>
+                </div>
+                <div id="results" class="space-y-4">
+                    <!-- Matching results will be displayed here -->
+                </div>
+                 <div id="errorMessage" class="hidden mt-4 text-center p-4 bg-red-100 text-red-700 rounded-lg"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const jobDescription = document.getElementById('jobDescription');
+        const matchBtn = document.getElementById('matchBtn');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const results = document.getElementById('results');
+        const errorMessage = document.getElementById('errorMessage');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const buttonText = document.getElementById('button-text');
+        const resumeUpload = document.getElementById('resumeUpload');
+        const fileList = document.getElementById('fileList');
+
+        let uploadedFiles = []; // To store { name, text }
+        
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
+
+        const renderFileList = () => {
+            fileList.innerHTML = '';
+            if (uploadedFiles.length === 0) {
+                fileList.innerHTML = `<p class="text-gray-500 italic">No files selected.</p>`;
+                return;
+            }
+
+            uploadedFiles.forEach((file, index) => {
+                const fileElement = document.createElement('div');
+                fileElement.classList.add('flex', 'items-center', 'justify-between', 'p-3', 'bg-gray-50', 'rounded-lg', 'border');
+                fileElement.innerHTML = `
+                    <div class="flex items-center overflow-hidden">
+                        <i data-lucide="file-text" class="w-5 h-5 text-gray-500 mr-3 flex-shrink-0"></i>
+                        <span class="font-medium text-gray-800 truncate" title="${file.name}">${file.name}</span>
+                    </div>
+                    <button class="remove-file-btn text-red-500 hover:text-red-700 ml-4" data-index="${index}">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                `;
+                fileList.appendChild(fileElement);
+            });
+            lucide.createIcons();
+        };
+
+        const parsePdf = async (file) => {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                fullText += textContent.items.map(item => item.str).join(' ') + '\n';
+            }
+            return fullText;
+        };
+
+        const handleFileUpload = async (event) => {
+            const files = event.target.files;
+            if (!files) return;
+            
+            fileList.innerHTML = `<div class="flex items-center text-gray-600"><div class="loader mr-2 !w-5 !h-5 !border-2"></div> Parsing files...</div>`;
+
+            const filePromises = Array.from(files).map(async file => {
+                try {
+                    let text;
+                    if (file.type === 'application/pdf') {
+                        text = await parsePdf(file);
+                    } else if (file.type === 'text/plain') {
+                        text = await file.text();
+                    } else {
+                        console.warn(`Unsupported file type: ${file.name}`);
+                        return null;
+                    }
+                    return { name: file.name, text };
+                } catch (error) {
+                    console.error(`Failed to parse ${file.name}:`, error);
+                    return null;
+                }
+            });
+            
+            const parsedFiles = (await Promise.all(filePromises)).filter(f => f !== null);
+            uploadedFiles.push(...parsedFiles);
+
+            renderFileList();
+        };
+
+        const removeFile = (index) => {
+            uploadedFiles.splice(index, 1);
+            renderFileList();
+        };
+        
+        const getScoreColor = (score) => {
+            if (score >= 8) return 'text-green-600';
+            if (score >= 5) return 'text-yellow-600';
+            return 'text-red-600';
+        };
+
+        const displayResult = (candidate) => {
+            const resultDiv = document.createElement('div');
+            resultDiv.classList.add('p-5', 'border', 'rounded-lg', 'shadow-sm', 'bg-white');
+            resultDiv.innerHTML = `
+                <div class="flex flex-col md:flex-row md:items-start justify-between">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 md:mb-0">${candidate.name}</h3>
+                    <div class="text-3xl font-bold ${getScoreColor(candidate.score)}">${candidate.score}/10</div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <h4 class="font-semibold text-gray-700 mb-2">Justification:</h4>
+                    <p class="text-gray-600 whitespace-pre-wrap">${candidate.justification}</p>
+                </div>
+            `;
+            return resultDiv;
+        };
+        
+        const displayError = (message) => {
+            errorMessage.textContent = `An error occurred: ${message}. Please check the console for more details.`;
+            errorMessage.classList.remove('hidden');
+        };
+
+        const callGemini = async (jd, resume) => {
+            const systemPrompt = `You are an expert HR analyst. Your task is to compare a resume against a job description with high accuracy.`;
+            const userPrompt = `
+                Analyze the provided job description and resume. Return a valid JSON object with two keys:
+                1. "score": A numerical score from 1 to 10 on how well the resume matches the job description.
+                2. "justification": A concise paragraph explaining the score, highlighting matching skills, experience, and any gaps.
+
+                Job Description:
+                ---
+                ${jd}
+                ---
+
+                Resume:
+                ---
+                ${resume}
+                ---
+            `;
+            
+            // NOTE: When running locally, you must get your own API key from Google AI Studio.
+            // The empty key works in the Canvas environment.
+            const apiKey = "AIzaSyAhC8fdsKEeeiuEtnO1qSqsWLH2oE-MZOM";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`API error! status: ${response.status}`);
+
+            const result = await response.json();
+            const textResponse = result.candidates[0].content.parts[0].text;
+            const jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+            return JSON.parse(jsonString);
+        };
+
+        const handleMatchClick = async () => {
+            const jd = jobDescription.value.trim();
+            if (!jd) {
+                alert("Please paste a job description.");
+                return;
+            }
+            if (uploadedFiles.length === 0) {
+                alert("Please upload at least one resume.");
+                return;
+            }
+
+            matchBtn.disabled = true;
+            loadingSpinner.classList.remove('hidden');
+            buttonText.textContent = 'Analyzing...';
+            resultsContainer.classList.remove('hidden');
+            results.innerHTML = '';
+            errorMessage.classList.add('hidden');
+
+            try {
+                const analysisPromises = uploadedFiles.map(async (candidateFile) => {
+                    const candidateName = candidateFile.name.split('.').slice(0, -1).join('.').replace(/_/g, ' ');
+                    
+                    const analysis = await callGemini(jd, candidateFile.text);
+                    
+                    const resultData = { 
+                        name: candidateName,
+                        score: analysis.score,
+                        justification: analysis.justification,
+                        jd: jd
+                    };
+
+                    // Send the result to your backend server
+                    try {
+                        await fetch('http://localhost:3000/api/save-result', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(resultData)
+                        });
+                    } catch (dbError) {
+                        console.error('Could not save result to database:', dbError);
+                    }
+
+                    return resultData;
+                });
+                
+                const analysisResults = await Promise.all(analysisPromises);
+                
+                analysisResults.sort((a, b) => b.score - a.score);
+
+                analysisResults.forEach(candidate => {
+                    const resultCard = displayResult(candidate);
+                    results.appendChild(resultCard);
+                });
+
+            } catch (error) {
+                console.error("Failed to get match results:", error);
+                displayError(error.message);
+            } finally {
+                matchBtn.disabled = false;
+                loadingSpinner.classList.add('hidden');
+                buttonText.textContent = 'Match Resumes';
+            }
+        };
+        
+        resumeUpload.addEventListener('change', handleFileUpload);
+        matchBtn.addEventListener('click', handleMatchClick);
+        fileList.addEventListener('click', (e) => {
+            const removeButton = e.target.closest('.remove-file-btn');
+            if (removeButton) {
+                const index = removeButton.dataset.index;
+                removeFile(index);
+            }
+        });
+
+        window.onload = () => {
+            lucide.createIcons();
+            renderFileList();
+        };
+    </script>
+</body>
+</html>
+
