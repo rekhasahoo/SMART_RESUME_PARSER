@@ -1,4 +1,4 @@
-# 🧠 AI-Powered Resume Screener
+#  AI-Powered Resume Screener
 
 This project provides a **full-stack solution** for automating the initial stages of the recruitment pipeline.  
 It leverages a **Large Language Model (LLM)** to perform semantic analysis and matching between candidate resumes and a given job description.
@@ -7,22 +7,22 @@ The system calculates a **compatibility score** and provides a **qualitative jus
 
 ---
 
-## 🏗️ System Architecture
+##  System Architecture
 
 The application is built on a **decoupled client-server architecture**:
 
-### 🔹 Frontend
+###  Frontend
 A static single-page application built with:
 - **HTML**
 - **Tailwind CSS**
 - **JavaScript**
 
-### 🔹 Backend
+###  Backend
 A **Node.js** server using **Express.js** REST API to handle:
 - Business logic  
 - Database communication
 
-### 🔹 Database
+###  Database
 - **MySQL** database for persistent storage of screening results.
 
 ### 🔹 External Service
@@ -30,17 +30,17 @@ A **Node.js** server using **Express.js** REST API to handle:
 
 ---
 
-## ⚙️ Core Features
+##  Core Features
 
-- **📂 File Ingestion:** Supports multi-file uploads for candidate resumes (`.pdf` and `.txt` formats).
-- **🧩 Semantic Analysis:** Uses LLM to intelligently compare resume text with job descriptions.
-- **📊 Quantitative Scoring:** Assigns a score (1–10) based on skill and experience alignment.
-- **💬 Qualitative Justification:** Generates a concise rationale highlighting candidate strengths and weaknesses.
-- **🗄️ Data Persistence:** Archives all screening results in a MySQL database for record-keeping and future analysis.
+- ** File Ingestion:** Supports multi-file uploads for candidate resumes (`.pdf` and `.txt` formats).
+- ** Semantic Analysis:** Uses LLM to intelligently compare resume text with job descriptions.
+- ** Quantitative Scoring:** Assigns a score (1–10) based on skill and experience alignment.
+- ** Qualitative Justification:** Generates a concise rationale highlighting candidate strengths and weaknesses.
+- ** Data Persistence:** Archives all screening results in a MySQL database for record-keeping and future analysis.
 
 ---
 
-## 🧰 Technology Stack
+##  Technology Stack
 
 | Tier | Technology |
 |------|-------------|
@@ -51,9 +51,9 @@ A **Node.js** server using **Express.js** REST API to handle:
 
 ---
 
-## 🛠️ Setup and Installation
+##  Setup and Installation
 
-### 🔑 Prerequisites
+###  Prerequisites
 
 Ensure you have the following installed:
 - [Node.js (v18.x or later)](https://nodejs.org/)
@@ -63,7 +63,7 @@ Ensure you have the following installed:
 
 ---
 
-### 📥 Installation Steps
+###  Installation Steps
 
 1. **Clone the repository:**
    ```bash
@@ -100,7 +100,7 @@ CREATE TABLE screening_results (
 
 - In index.html, locate the apiKey constant and insert your Google Gemini API key (if running outside the original development environment).
 
-## 🚀 Running the Application
+##  Running the Application
 
 - Start the backend server:
 ```bash
