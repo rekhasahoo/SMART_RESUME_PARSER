@@ -36,11 +36,11 @@ graph TD
     end
 
     %% User flow arrows
-    A -->|1. User uploads files and submits job description| B
+    A -->|1. User uploads <br>files and submits <br>job description| B
     B -->|2. Forwards text for analysis<br>Secure server-to-server API call| C
     C -->|3. Returns structured JSON<br> Score and justification| B
     B -->|4. Persists results<br> SQL INSERT query| D
-    B -->|5. Returns final analysis to client| A
+    B -->|5. Returns final <br>analysis to client| A
 
     %% Node styles with readable colors
     style A fill:#CCE5FF,stroke:#0055A4,color:#000,stroke-width:2px
