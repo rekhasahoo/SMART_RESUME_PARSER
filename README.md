@@ -22,15 +22,15 @@ The backend acts as a trusted intermediary, ensuring that sensitive credentials 
 
 ```mermaid
 graph TD
-    subgraph "Tier 1: Client Layer (Browser)"
+    subgraph "Tier 1: Client Layer <br> (Browser)"
         A[Frontend Application<br> HTML, Tailwind CSS, JS]
     end
 
-    subgraph "Tier 2: Application Layer (Server)"
+    subgraph "Tier 2: Application Layer <br> (Server)"
         B[Node.js / Express API]
     end
 
-    subgraph "Tier 3: Data and Services Layer"
+    subgraph "Tier 3: Data and Services <br>Layer"
         C[Google Gemini API<br> External Service]
         D[MySQL Database<br> Persistent Storage]
     end
