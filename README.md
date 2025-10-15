@@ -1,46 +1,59 @@
 ### AI-Powered Resume Screener & Job Match Engine
 An intelligent, full-stack application designed to automate and enhance the technical recruitment pipeline by leveraging Large Language Models for deep semantic analysis of resumes against job descriptions.
-##1. **Executive Overview**
+## 1. **Executive Overview**
 In today's competitive hiring landscape, recruiters spend countless hours manually sifting through resumes. This process is often inefficient, prone to bias, and doesn't always identify the best-fit candidates.
 This project solves that problem by providing an automated solution that goes beyond simple keyword matching. It uses the Google Gemini LLM to understand the context, skills, and experience outlined in a resume and provides a quantitative score and a qualitative, evidence-based justification for each candidate's fit. This allows hiring managers to instantly surface the most promising applicants and make more informed decisions.
-##2. **Key Features**
+## 2. **Key Features**
 - Multi-File Processing: Ingest and analyze multiple candidate resumes (.pdf, .txt) in a single batch.
 - Semantic Matching: Utilizes an LLM to understand the nuances of skills and experience, not just keywords.
 - Quantitative Scoring: Delivers a clear, numerical score (1-10) for at-a-glance candidate comparison.
 - AI-Generated Justification: Provides a concise, professional summary explaining why a candidate received a certain score, highlighting specific strengths and gaps.
 - Persistent Storage: Archives all screening results in a MySQL database for auditing and record-keeping.
 Decoupled Architecture: Built with a scalable and secure client-server model.
-##3. **System Architecture**
-The application is built on a robust, decoupled Three-Tier Architecture to ensure security, scalability, and maintainability. The backend serves as a trusted intermediary, ensuring that sensitive credentials like API keys are never exposed to the client.
+Perfect — you’re trying to document your **three-tier system architecture** and include a **diagram** in Markdown.
+
+On GitHub, standard Markdown **doesn’t render HTML `<div>` styling inside Mermaid diagrams**, but **Mermaid syntax itself works**. We can simplify your Mermaid diagram so it renders correctly on GitHub and still conveys all your information.
+
+Here’s a GitHub-compatible version:
+
+---
+
+## 3. **System Architecture**
+
+The application is built on a robust, decoupled **Three-Tier Architecture** to ensure security, scalability, and maintainability. The backend serves as a trusted intermediary, ensuring that sensitive credentials like API keys are never exposed to the client.
+
+```mermaid
 graph TD
     subgraph "Tier 1: Client Layer (Browser)"
-        A["<div style='font-weight:bold; padding:5px;'>Frontend Application</div>(HTML, Tailwind CSS, JS)"]
+        A[Frontend Application (HTML, Tailwind CSS, JS)]
     end
 
     subgraph "Tier 2: Application Layer (Server)"
-        B["<div style='font-weight:bold; padding:5px;'>Node.js / Express API</div>"]
+        B[Node.js / Express API]
     end
 
     subgraph "Tier 3: Data & Services Layer"
-        C["<div style='font-weight:bold; padding:5px;'>Google Gemini API</div>(External Service)"]
-        D["<div style='font-weight:bold; padding:5px;'>MySQL Database</div>(Persistent Storage)"]
+        C[Google Gemini API (External Service)]
+        D[MySQL Database (Persistent Storage)]
     end
 
-    A -- "1. User uploads files & submits JD<br>(HTTP POST Request to /api/analyze)" --> B
-    B -- "2. Forwards text for analysis<br>(<b>Secure, Server-to-Server API Call</b>)" --> C
-    C -- "3. Returns structured JSON<br>(Score & Justification)" --> B
-    B -- "4. Persists results<br>(SQL INSERT Query)" --> D
-    B -- "5. Returns final analysis to client<br>(HTTP Response)" --> A
+    A -->|1. User uploads files & submits JD (HTTP POST /api/analyze)| B
+    B -->|2. Forwards text for analysis (Secure Server-to-Server API Call)| C
+    C -->|3. Returns structured JSON (Score & Justification)| B
+    B -->|4. Persists results (SQL INSERT Query)| D
+    B -->|5. Returns final analysis to client (HTTP Response)| A
 
     style A fill:#D1E8FF,stroke:#0055A4,stroke-width:2px
     style B fill:#FFF2CC,stroke:#D6B656,stroke-width:2px
     style C fill:#E8D0FF,stroke:#9673B9,stroke-width:2px
     style D fill:#D5E8D4,stroke:#82B366,stroke-width:2px
+```
+
 
 
 ##4. **LLM Prompt Engineering: The Core Logic**
 The quality of the AI's analysis is entirely dependent on the quality of the prompt. A simple "compare this" prompt is insufficient. We employ a structured prompting methodology to ensure reliable, accurate, and parsable results.
-##The Prompt Template
+## The Prompt Template
 ```bash
 As a Senior Technical Recruiter with 15 years of experience, your task is to analyze the following resume against the provided job description. Your analysis must be objective, focusing purely on the alignment of skills, experience, and qualifications.
 
