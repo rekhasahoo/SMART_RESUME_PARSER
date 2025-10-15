@@ -18,9 +18,20 @@ Here’s a GitHub-compatible version:
 
 ---
 
-## 3. **System Architecture**
+Perfect! ✅ I’ve rewritten your **System Architecture section** fully in **GitHub-compatible Markdown with Mermaid diagrams**.
 
-The application is built on a robust, decoupled **Three-Tier Architecture** to ensure security, scalability, and maintainability. The backend serves as a trusted intermediary, ensuring that sensitive credentials like API keys are never exposed to the client.
+You can **copy and paste this directly into your README.md**, and it will render cleanly without errors.
+
+---
+
+## 3. System Architecture
+
+The application is built on a robust, decoupled **Three-Tier Architecture** to ensure security, scalability, and maintainability.
+The backend acts as a trusted intermediary, ensuring that sensitive credentials like API keys are never exposed to the client.
+
+---
+
+### Architecture Diagram
 
 ```mermaid
 graph TD
@@ -32,27 +43,54 @@ graph TD
         B[Node.js / Express API]
     end
 
-    subgraph "Tier 3: Data & Services Layer"
+    subgraph "Tier 3: Data and Services Layer"
         C[Google Gemini API - External Service]
         D[MySQL Database - Persistent Storage]
     end
 
-    A -->|1. User uploads files & submits JD| B
-    B -->|2. Forwards text for analysis - Secure Server-to-Server API Call| C
-    C -->|3. Returns structured JSON (Score & Justification)| B
-    B -->|4. Persists results - SQL INSERT Query| D
+    %% User flow arrows
+    A -->|1. User uploads files and submits job description| B
+    B -->|2. Forwards text for analysis - secure server to server API call| C
+    C -->|3. Returns structured JSON with score and justification| B
+    B -->|4. Persists results - SQL INSERT query| D
     B -->|5. Returns final analysis to client| A
 
+    %% Node styles
     style A fill:#D1E8FF,stroke:#0055A4,stroke-width:2px
     style B fill:#FFF2CC,stroke:#D6B656,stroke-width:2px
     style C fill:#E8D0FF,stroke:#9673B9,stroke-width:2px
     style D fill:#D5E8D4,stroke:#82B366,stroke-width:2px
-
 ```
 
+---
+
+###  Tier Descriptions
+
+* **Tier 1: Client Layer (Browser)**
+  Handles the user interface using **HTML, Tailwind CSS, and JavaScript**. Users upload resumes and submit job descriptions here.
+
+* **Tier 2: Application Layer (Server)**
+  Implements business logic and secure communication with external services. Built using **Node.js and Express.js**. This layer ensures that sensitive data (like API keys) never reaches the client.
+
+* **Tier 3: Data and Services Layer**
+
+  * **Google Gemini API:** Performs semantic analysis and scoring of resumes.
+  * **MySQL Database:** Stores all screening results for record-keeping and future analysis.
+
+---
+
+###  Workflow Summary
+
+1. User uploads resumes and submits a job description.
+2. Server receives the request and forwards the text to Google Gemini API.
+3. The API returns a structured JSON containing the **compatibility score** and **justification**.
+4. Server stores the results in the **MySQL database**.
+5. Final analysis is returned to the client for display.
+
+---
 
 
-##4. **LLM Prompt Engineering: The Core Logic**
+## 4. **LLM Prompt Engineering: The Core Logic**
 The quality of the AI's analysis is entirely dependent on the quality of the prompt. A simple "compare this" prompt is insufficient. We employ a structured prompting methodology to ensure reliable, accurate, and parsable results.
 ## The Prompt Template
 ```bash
