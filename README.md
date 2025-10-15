@@ -9,20 +9,6 @@ This project solves that problem by providing an automated solution that goes be
 - Quantitative Scoring: Delivers a clear, numerical score (1-10) for at-a-glance candidate comparison.
 - AI-Generated Justification: Provides a concise, professional summary explaining why a candidate received a certain score, highlighting specific strengths and gaps.
 - Persistent Storage: Archives all screening results in a MySQL database for auditing and record-keeping.
-Decoupled Architecture: Built with a scalable and secure client-server model.
-Perfect — you’re trying to document your **three-tier system architecture** and include a **diagram** in Markdown.
-
-On GitHub, standard Markdown **doesn’t render HTML `<div>` styling inside Mermaid diagrams**, but **Mermaid syntax itself works**. We can simplify your Mermaid diagram so it renders correctly on GitHub and still conveys all your information.
-
-Here’s a GitHub-compatible version:
-
----
-
-Perfect! ✅ I’ve rewritten your **System Architecture section** fully in **GitHub-compatible Markdown with Mermaid diagrams**.
-
-You can **copy and paste this directly into your README.md**, and it will render cleanly without errors.
-
----
 
 ## 3. System Architecture
 
