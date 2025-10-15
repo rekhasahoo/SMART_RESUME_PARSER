@@ -37,7 +37,7 @@ The backend acts as a trusted intermediary, ensuring that sensitive credentials 
 ```mermaid
 graph TD
     subgraph "Tier 1: Client Layer (Browser)"
-        A[Frontend Application\n HTML, Tailwind CSS, JS]
+        A[Frontend Application<br> HTML, Tailwind CSS, JS]
     end
 
     subgraph "Tier 2: Application Layer (Server)"
@@ -45,15 +45,15 @@ graph TD
     end
 
     subgraph "Tier 3: Data and Services Layer"
-        C[Google Gemini API\n External Service]
-        D[MySQL Database\n Persistent Storage]
+        C[Google Gemini API<br> External Service]
+        D[MySQL Database<br> Persistent Storage]
     end
 
     %% User flow arrows
     A -->|1. User uploads files and submits job description| B
-    B -->|2. Forwards text for analysis\n Secure server-to-server API call| C
-    C -->|3. Returns structured JSON\n Score and justification| B
-    B -->|4. Persists results\n SQL INSERT query| D
+    B -->|2. Forwards text for analysis<br>Secure server-to-server API call| C
+    C -->|3. Returns structured JSON<br> Score and justification| B
+    B -->|4. Persists results<br> SQL INSERT query| D
     B -->|5. Returns final analysis to client| A
 
     %% Node styles with readable colors
