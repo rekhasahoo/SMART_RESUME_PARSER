@@ -33,10 +33,11 @@ The backend acts as a trusted intermediary, ensuring that sensitive credentials 
 
 ### Architecture Diagram
 
+
 ```mermaid
 graph TD
     subgraph "Tier 1: Client Layer (Browser)"
-        A[Frontend Application - HTML Tailwind CSS JS]
+        A[Frontend Application\nHTML, Tailwind CSS, JS]
     end
 
     subgraph "Tier 2: Application Layer (Server)"
@@ -44,25 +45,25 @@ graph TD
     end
 
     subgraph "Tier 3: Data and Services Layer"
-        C[Google Gemini API - External Service]
-        D[MySQL Database - Persistent Storage]
+        C[Google Gemini API\nExternal Service]
+        D[MySQL Database\nPersistent Storage]
     end
 
     %% User flow arrows
     A -->|1. User uploads files and submits job description| B
-    B -->|2. Forwards text for analysis - secure server to server API call| C
-    C -->|3. Returns structured JSON with score and justification| B
-    B -->|4. Persists results - SQL INSERT query| D
+    B -->|2. Forwards text for analysis\nSecure server-to-server API call| C
+    C -->|3. Returns structured JSON\nScore and justification| B
+    B -->|4. Persists results\nSQL INSERT query| D
     B -->|5. Returns final analysis to client| A
 
-    %% Node styles
-    style A fill:#D1E8FF,stroke:#0055A4,stroke-width:2px
-    style B fill:#FFF2CC,stroke:#D6B656,stroke-width:2px
-    style C fill:#E8D0FF,stroke:#9673B9,stroke-width:2px
-    style D fill:#D5E8D4,stroke:#82B366,stroke-width:2px
+    %% Node styles with readable colors
+    style A fill:#CCE5FF,stroke:#0055A4,color:#000,stroke-width:2px
+    style B fill:#FFF8CC,stroke:#D6B656,color:#000,stroke-width:2px
+    style C fill:#EBD0FF,stroke:#9673B9,color:#000,stroke-width:2px
+    style D fill:#D5F0D4,stroke:#82B366,color:#000,stroke-width:2px
 ```
 
----
+
 
 ###  Tier Descriptions
 
