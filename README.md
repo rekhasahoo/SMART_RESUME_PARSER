@@ -25,7 +25,7 @@ The application is built on a robust, decoupled **Three-Tier Architecture** to e
 ```mermaid
 graph TD
     subgraph "Tier 1: Client Layer (Browser)"
-        A[Frontend Application (HTML, Tailwind CSS, JS)]
+        A[Frontend Application - HTML Tailwind CSS JS]
     end
 
     subgraph "Tier 2: Application Layer (Server)"
@@ -33,20 +33,21 @@ graph TD
     end
 
     subgraph "Tier 3: Data & Services Layer"
-        C[Google Gemini API (External Service)]
-        D[MySQL Database (Persistent Storage)]
+        C[Google Gemini API - External Service]
+        D[MySQL Database - Persistent Storage]
     end
 
-    A -->|1. User uploads files & submits JD (HTTP POST /api/analyze)| B
-    B -->|2. Forwards text for analysis (Secure Server-to-Server API Call)| C
+    A -->|1. User uploads files & submits JD| B
+    B -->|2. Forwards text for analysis - Secure Server-to-Server API Call| C
     C -->|3. Returns structured JSON (Score & Justification)| B
-    B -->|4. Persists results (SQL INSERT Query)| D
-    B -->|5. Returns final analysis to client (HTTP Response)| A
+    B -->|4. Persists results - SQL INSERT Query| D
+    B -->|5. Returns final analysis to client| A
 
     style A fill:#D1E8FF,stroke:#0055A4,stroke-width:2px
     style B fill:#FFF2CC,stroke:#D6B656,stroke-width:2px
     style C fill:#E8D0FF,stroke:#9673B9,stroke-width:2px
     style D fill:#D5E8D4,stroke:#82B366,stroke-width:2px
+
 ```
 
 
